@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../redux/itemsSlice';
 
 import { nanoid } from 'nanoid';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 import s from './Form.module.css';
 
 function Form() {
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.items);
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -16,8 +18,13 @@ function Form() {
 
   const handleSubmit = e => {
     e.preventDefault();
+    const newContact = e.target.elements.name.value;
 
-    dispatch(add({ name, number, id }));
+    const contact = contacts.map(item => item.name);
+    contact.includes(newContact)
+      ? Notify.info(`${name} is already in contact`)
+      : dispatch(add({ name, number, id }));
+
     reset();
   };
 
@@ -51,7 +58,6 @@ function Form() {
     <>
       <form onSubmit={handleSubmit}>
         <label className={s.formLabel}>
-        
           <input
             type="text"
             name="name"
@@ -65,7 +71,6 @@ function Form() {
         </label>
 
         <label className={s.formLabel}>
-         
           <input
             type="tel"
             name="number"

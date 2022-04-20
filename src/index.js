@@ -17,3 +17,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
   </React.StrictMode>
 );
+
+// "homepage": "https://NataliyaKulibaba.github.io/goit-react-hw-06-phonebook/",
